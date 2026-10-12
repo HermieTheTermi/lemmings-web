@@ -11,8 +11,14 @@ async function runSolveRunner() {
   console.log('=== Lemmings Web: Browser Touch Solution Runner ===');
   console.log('Emulating Mobile Portrait: 390x844 with real Touch Events');
 
-  const { server, port } = await createServer(8091);
-  const baseUrl = `http://127.0.0.1:${port}/index.html`;
+  // Mit SOLVE_BASE_URL=https://... gegen eine bereits veroeffentlichte Instanz laufen
+  const externalUrl = process.env.SOLVE_BASE_URL;
+  const { server, port } = externalUrl ? { server: null, port: null } : await createServer(8091);
+  const baseUrl = externalUrl
+    ? new URL('index.html', externalUrl.endsWith('/') ? externalUrl : `${externalUrl}/`).href
+    : `http://127.0.0.1:${port}/index.html`;
+  if (externalUrl) console.log(`Ziel: ${baseUrl} (kein lokaler Server)`);
+
 
   const browser = await chromium.launch({
     headless: true,
@@ -197,7 +203,7 @@ async function runSolveRunner() {
   }
 
   await browser.close();
-  server.close();
+  if (server) server.close();
 
   console.log('\n================ BROWSER TOUCH RUNNER SUMMARY ================');
   console.log('Level | Status  | Gerettet | Quote | Ergebnis');
