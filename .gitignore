@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+docs/shots/*.tmp.png
+
+# interne Auftrags-/Prozessdateien
+.task*.md
+
+# Entwicklungs-/Zwischenbilder (nur der aktuelle Stand ist oeffentlich)
+docs/shots/round*/
+docs/shots/verify/

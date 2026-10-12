@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0f14">
+  <meta name="description" content="Lemmings Web - Retro Arcade Klassiker fürs Handy und Desktop">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Lemmings Web</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Top HUD / Information Bar -->
+    <header id="top-hud">
+      <div class="level-meta">
+        <span class="level-title" id="hud-level-title">1. Der erste Schritt</span>
+        <span class="level-subtitle" id="hud-level-sub">Graben und Brücken bauen</span>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-label">Gerettet</span>
+          <span class="stat-value highlight" id="hud-saved">0 / 8</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Zeit</span>
+          <span class="stat-value" id="hud-time">2:00</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Aktiv</span>
+          <span class="stat-value" id="hud-active">0 / 10</span>
+        </div>
+      </div>
+      <!-- Modern Time Progress Bar -->
+      <div class="time-progress-track" id="time-progress-track" role="progressbar" aria-label="Verbleibende Zeit">
+        <div class="time-progress-fill" id="time-progress-fill"></div>
+      </div>
+    </header>
+
+    <!-- Main Game Viewport -->
+    <main id="viewport-container">
+      <canvas id="game-canvas"></canvas>
+    </main>
+
+    <!-- Bottom Thumb Zone (≥48px Touch Targets) -->
+    <footer id="bottom-hud">
+      <!-- Game & Simulation Controls -->
+      <div class="controls-row">
+        <button class="ctrl-btn" id="btn-menu" aria-label="Levelauswahl">Level</button>
+        <button class="ctrl-btn" id="btn-pause" aria-label="Spiel pausieren">Pause</button>
+        <button class="ctrl-btn" id="btn-fast" aria-label="Zeitraffer 2x">×2</button>
+        <button class="ctrl-btn" id="btn-restart" aria-label="Level neu starten">Neustart</button>
+        <button class="ctrl-btn" id="btn-mute" aria-label="Ton umschalten">Ton</button>
+      </div>
+
+      <!-- Skills Bar (Daumenzone) -->
+      <div class="skills-bar" id="skills-bar" role="toolbar" aria-label="Fähigkeiten">
+        <button class="skill-btn" data-skill="CLIMBER" id="btn-climber">
+          <span class="skill-code">Kletter</span>
+          <span class="skill-count" id="count-climber">0</span>
+          <span class="skill-shortcut">[1]</span>
+        </button>
+        <button class="skill-btn" data-skill="FLOATER" id="btn-floater">
+          <span class="skill-code">Schirm</span>
+          <span class="skill-count" id="count-floater">0</span>
+          <span class="skill-shortcut">[2]</span>
+        </button>
+        <button class="skill-btn" data-skill="BOMBER" id="btn-bomber">
+          <span class="skill-code">Bombe</span>
+          <span class="skill-count" id="count-bomber">0</span>
+          <span class="skill-shortcut">[3]</span>
+        </button>
+        <button class="skill-btn" data-skill="BLOCKER" id="btn-blocker">
+          <span class="skill-code">Block</span>
+          <span class="skill-count" id="count-blocker">0</span>
+          <span class="skill-shortcut">[4]</span>
+        </button>
+        <button class="skill-btn" data-skill="BUILDER" id="btn-builder">
+          <span class="skill-code">Bauer</span>
+          <span class="skill-count" id="count-builder">0</span>
+          <span class="skill-shortcut">[5]</span>
+        </button>
+        <button class="skill-btn" data-skill="BASHER" id="btn-basher">
+          <span class="skill-code">Hacker</span>
+          <span class="skill-count" id="count-basher">0</span>
+          <span class="skill-shortcut">[6]</span>
+        </button>
+        <button class="skill-btn" data-skill="MINER" id="btn-miner">
+          <span class="skill-code">Bergm.</span>
+          <span class="skill-count" id="count-miner">0</span>
+          <span class="skill-shortcut">[7]</span>
+        </button>
+        <button class="skill-btn" data-skill="DIGGER" id="btn-digger">
+          <span class="skill-code">Gräber</span>
+          <span class="skill-count" id="count-digger">0</span>
+          <span class="skill-shortcut">[8]</span>
+        </button>
+      </div>
+    </footer>
+
+    <!-- Victory Modal -->
+    <div class="modal-overlay hidden" id="modal-victory">
+      <div class="modal-card">
+        <h2 class="modal-title victory">Level Geschafft!</h2>
+        <p class="modal-body" id="modal-victory-text">Alle erforderlichen Lemmings wurden sicher ins Ziel gerettet.</p>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btn-victory-replay">Nochmal</button>
+          <button class="btn-primary" id="btn-victory-next">Nächstes Level</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Defeat Modal -->
+    <div class="modal-overlay hidden" id="modal-defeat">
+      <div class="modal-card">
+        <h2 class="modal-title defeat">Gescheitert!</h2>
+        <p class="modal-body" id="modal-defeat-text">Die Rettungsquote wurde leider nicht erreicht.</p>
+        <div class="modal-actions">
+          <button class="btn-primary" id="btn-defeat-retry">Erneut versuchen</button>
+          <button class="btn-secondary" id="btn-defeat-menu">Level-Auswahl</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Selection Modal -->
+    <div class="modal-overlay hidden" id="modal-levels">
+      <div class="modal-card">
+        <h2 class="modal-title">Levelauswahl</h2>
+        <div class="levels-grid" id="levels-grid">
+          <!-- Dynamically populated -->
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btn-levels-close">Schließen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

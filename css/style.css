@@ -1,0 +1,584 @@
+/* ==========================================================================
+   Design System & Styling: Lemmings Web (Mobile-First)
+   Refer to docs/DESIGN.md for detailed tokens and specifications.
+   ========================================================================== */
+
+:root {
+  /* Color Palette */
+  --bg-dark: #0c0f14;
+  --hud-bg: #14171f;
+  --card-bg: #222733;
+  --card-hover: #2b3140;
+  --card-selected: #2b281f;
+  --border-idle: #384052;
+  --border-active: #4a556d;
+  --accent-gold: #f59e0b;
+  --accent-gold-text: #fbbf24;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --color-danger: #f87171;
+  --color-success: #34d399;
+
+  /* Typography */
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Segoe UI Mono', monospace;
+
+  /* Safe Area Insets */
+  --safe-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  --safe-top: max(10px, env(safe-area-inset-top, 0px));
+  --safe-left: max(8px, env(safe-area-inset-left, 0px));
+  --safe-right: max(8px, env(safe-area-inset-right, 0px));
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  touch-action: manipulation;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Top Header / Status HUD
+   ========================================================================== */
+#top-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--safe-top) var(--safe-right) 6px var(--safe-left);
+  background: var(--hud-bg);
+  border-bottom: 1px solid var(--border-idle);
+  position: relative;
+  z-index: 110;
+  flex-shrink: 0;
+}
+
+.level-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.level-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.level-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.stat-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value.highlight {
+  color: var(--color-success);
+}
+
+/* Time Limit Progress Bar */
+.time-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(30, 41, 59, 0.7);
+  overflow: hidden;
+}
+
+.time-progress-fill {
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-success);
+  transition: width 200ms linear, background-color 250ms ease;
+}
+
+/* ==========================================================================
+   Game Canvas Viewport
+   ========================================================================== */
+#viewport-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: var(--bg-dark);
+}
+
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none; /* Pointer & touch gestures handled manually */
+  cursor: crosshair;
+}
+
+/* ==========================================================================
+   Bottom Thumb Zone (HUD & Controls)
+   ========================================================================== */
+#bottom-hud {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px var(--safe-right) var(--safe-bottom) var(--safe-left);
+  background: var(--hud-bg);
+  border-top: 1px solid var(--border-idle);
+  position: relative;
+  z-index: 110;
+  flex-shrink: 0;
+}
+
+/* Row 1: System Controls (Menu, Pause, FastForward, Restart, Mute) */
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-btn {
+  height: 38px;
+  min-width: 44px;
+  padding: 0 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-idle);
+  border-radius: 6px;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 2px 0 #12151c;
+  transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+}
+
+.ctrl-btn:active {
+  transform: translateY(1px);
+  background: var(--card-hover);
+}
+
+.ctrl-btn.active {
+  background: var(--card-selected);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold-text);
+}
+
+/* Row 2: Skills Bar (Daumenzone, ≥ 48px Touch Targets) */
+.skills-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.skills-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.skill-btn {
+  flex: 1 0 48px;
+  min-width: 48px;
+  height: 52px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-idle);
+  border-radius: 6px;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+  gap: 2px;
+  box-shadow: 0 2px 0 #12151c, 0 4px 6px -1px rgba(0,0,0,0.4);
+  transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+
+.skill-btn:active {
+  transform: translateY(1px);
+  background: var(--card-hover);
+}
+
+.skill-btn .skill-code {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 13px;
+}
+
+.skill-btn .skill-count {
+  font-size: 11px;
+  font-weight: 700;
+  background: #14171f;
+  color: var(--text-muted);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.skill-btn .skill-shortcut {
+  font-size: 8px;
+  color: var(--text-muted);
+  display: none; /* Shown on larger screens */
+}
+
+/* State: Selected */
+.skill-btn.selected {
+  background: var(--card-selected);
+  border: 2px solid var(--accent-gold);
+  color: var(--accent-gold-text);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+}
+
+.skill-btn.selected .skill-count {
+  background: var(--accent-gold);
+  color: #14171f;
+}
+
+/* State: Disabled / Empty (Unmissverständlich leer) */
+.skill-btn.disabled {
+  opacity: 0.35;
+  background: #12151c;
+  border-color: #20242e;
+  color: #475569;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.skill-btn.disabled .skill-code {
+  color: #475569;
+}
+
+.skill-btn.disabled .skill-count {
+  background: transparent;
+  color: #3b4252;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Responsive Thumb Zone Optimizations: Portrait Phone (<= 500px)
+   ========================================================================== */
+@media (max-width: 500px) {
+  .skills-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    overflow-x: visible;
+  }
+  .skill-btn {
+    min-width: 0;
+    height: 48px;
+  }
+  .controls-row {
+    gap: 4px;
+  }
+  .ctrl-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0 4px;
+    font-size: 11px;
+  }
+}
+
+/* ==========================================================================
+   Responsive Optimizations: Landscape Phone (height <= 500px)
+   ========================================================================== */
+@media (max-height: 500px) {
+  #top-hud {
+    padding: 2px var(--safe-right) 2px var(--safe-left);
+  }
+  .level-title {
+    font-size: 12px;
+  }
+  .level-subtitle {
+    display: none;
+  }
+  .stat-value {
+    font-size: 12px;
+  }
+  #bottom-hud {
+    gap: 3px;
+    padding: 3px var(--safe-right) var(--safe-bottom) var(--safe-left);
+  }
+  .ctrl-btn {
+    height: 32px;
+    font-size: 11px;
+  }
+  .skills-bar {
+    gap: 4px;
+  }
+  .skill-btn {
+    height: 44px;
+    min-width: 44px;
+    padding: 2px 1px;
+  }
+  .skill-btn .skill-code {
+    font-size: 10px;
+  }
+  .skill-btn .skill-count {
+    font-size: 10px;
+    padding: 0 4px;
+  }
+}
+
+/* ==========================================================================
+   Modals & Overlays (Dialog, Victory, Defeat, Level Select)
+   ========================================================================== */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(12, 15, 20, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-card {
+  background: #1c212c;
+  border: 1px solid var(--border-idle);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modal-title.victory {
+  color: var(--color-success);
+}
+
+.modal-title.defeat {
+  color: var(--color-danger);
+}
+
+.modal-body {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: var(--accent-gold);
+  color: #14171f;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #b45309;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-idle);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Level Select Grid */
+.levels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.level-card-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border-idle);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  text-align: left;
+}
+
+.level-card-btn.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: #262b36;
+}
+
+.level-card-btn:not(.locked):hover,
+.level-card-btn:not(.locked):active {
+  background: var(--card-hover);
+  border-color: var(--accent-gold);
+}
+
+.level-card-num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-gold-text);
+}
+
+.level-card-name {
+  font-size: 11px;
+  color: var(--text-main);
+}
+
+/* Desktop enhancements */
+@media (min-width: 768px) {
+  .skill-btn .skill-shortcut {
+    display: block;
+  }
+  .skill-btn {
+    flex: 1 0 60px;
+    height: 56px;
+  }
+  .level-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  #top-hud {
+    padding: var(--safe-top) 8px 4px 8px;
+    gap: 8px;
+  }
+  .level-meta {
+    max-width: 58%;
+  }
+  .level-title {
+    font-size: 12px;
+  }
+  .level-subtitle {
+    font-size: 9px;
+  }
+  .stats-bar {
+    gap: 8px;
+  }
+  .stat-label {
+    font-size: 8px;
+  }
+  .stat-value {
+    font-size: 12px;
+  }
+}
+
+@media (max-height: 480px) {
+  #bottom-hud {
+    padding: 3px 6px calc(3px + var(--safe-bottom)) 6px;
+    gap: 4px;
+  }
+  .controls-row {
+    margin-bottom: 2px;
+  }
+  .ctrl-btn {
+    height: 30px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+  .skill-btn {
+    height: 40px;
+    padding: 2px 4px;
+  }
+  .skill-name {
+    font-size: 9px;
+  }
+  .skill-count {
+    font-size: 11px;
+  }
+  .skill-btn .skill-shortcut {
+    display: none !important;
+  }
+}
+

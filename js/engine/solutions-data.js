@@ -1,0 +1,55 @@
+import { SKILL } from './lemming.js';
+
+export const LEVEL_SOLUTIONS = {
+  1: [
+    { tick: 240, skill: SKILL.BLOCKER, lemmingIndex: 1 },
+    { tick: 263, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 307, skill: SKILL.BASHER, lemmingIndex: 0 },
+    { tick: 310, skill: SKILL.BOMBER, lemmingIndex: 1 },
+  ],
+  2: [
+    { tick: 20, skill: SKILL.FLOATER, lemmingIndex: 0 },
+    { tick: 60, skill: SKILL.FLOATER, lemmingIndex: 1 },
+    { tick: 100, skill: SKILL.FLOATER, lemmingIndex: 2 },
+    { tick: 140, skill: SKILL.FLOATER, lemmingIndex: 3 },
+    { tick: 180, skill: SKILL.FLOATER, lemmingIndex: 4 },
+    { tick: 220, skill: SKILL.FLOATER, lemmingIndex: 5 },
+    { tick: 260, skill: SKILL.FLOATER, lemmingIndex: 6 },
+    { tick: 300, skill: SKILL.FLOATER, lemmingIndex: 7 },
+    { tick: 340, skill: SKILL.FLOATER, lemmingIndex: 8 },
+    { tick: 380, skill: SKILL.FLOATER, lemmingIndex: 9 },
+    { tick: 420, skill: SKILL.FLOATER, lemmingIndex: 10 },
+    { tick: 460, skill: SKILL.FLOATER, lemmingIndex: 11 },
+    { tick: 500, skill: SKILL.BLOCKER, lemmingIndex: 1 },
+    { tick: 530, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 543, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 556, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 727, skill: SKILL.BASHER, lemmingIndex: 0 },
+    { tick: 730, skill: SKILL.BOMBER, lemmingIndex: 1 },
+  ],
+  3: [
+    { tick: 230, skill: SKILL.BLOCKER, lemmingIndex: 1 },
+    { tick: 280, skill: SKILL.DIGGER, lemmingIndex: 0 },
+    { tick: 300, skill: SKILL.BOMBER, lemmingIndex: 1 },
+    { tick: 482, skill: SKILL.BASHER, lemmingIndex: 0 },
+  ],
+  4: [
+    { tick: 180, skill: SKILL.BLOCKER, lemmingIndex: 1 },
+    { tick: 205, skill: SKILL.MINER, lemmingIndex: 0 },
+    { tick: 240, skill: SKILL.BOMBER, lemmingIndex: 1 },
+    { tick: 415, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 457, skill: SKILL.BASHER, lemmingIndex: 0 },
+  ],
+  5: [
+    { tick: 115, skill: SKILL.BLOCKER, lemmingIndex: 1 },
+    { tick: 140, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 200, skill: SKILL.BOMBER, lemmingIndex: 1 },
+    { tick: 456, skill: SKILL.BASHER, lemmingIndex: 0 },
+  ],
+  6: [
+    { tick: 190, skill: SKILL.BLOCKER, lemmingIndex: 1 },
+    { tick: 265, skill: SKILL.BUILDER, lemmingIndex: 0 },
+    { tick: 280, skill: SKILL.BOMBER, lemmingIndex: 1 },
+    { tick: 436, skill: SKILL.BASHER, lemmingIndex: 0 },
+  ],
+};
